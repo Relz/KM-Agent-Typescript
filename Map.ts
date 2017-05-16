@@ -53,14 +53,6 @@ export class Map {
 		return this._reachableCavesMapPositions;
 	}
 
-	/*public pushReachableCave(value: ICave): void {
-		this._reachableCaves.push(value);
-	}
-
-	public popReachableCave(): void {
-		this._reachableCaves.pop();
-	}*/
-
 	public updateCave(row: number, col: number, cave: ICave): void {
 		if (!this._caves[row][col].isVisible) {
 			--this._unexploredCaveCount;
@@ -200,16 +192,16 @@ export class Map {
 
 	private computeHoleProbabilitiesNearCave(row: number, col: number): void {
 		const nearCavesMapPositions: IMapPosition[] = [];
-		if (row > 0 && !this._caves[row - 1][col].isVisible) {
+		if (row > 0 && !this._caves[row - 1][col].isVisible && this.allWindCavesNear(row - 1, col)) {
 			nearCavesMapPositions.push(new MapPosition(row - 1, col));
 		}
-		if (col < this.width - 1 && !this._caves[row][col + 1].isVisible) {
+		if (col < this.width - 1 && !this._caves[row][col + 1].isVisible && this.allWindCavesNear(row, col + 1)) {
 			nearCavesMapPositions.push(new MapPosition(row, col + 1));
 		}
-		if (row < this.height - 1 && !this._caves[row + 1][col].isVisible) {
+		if (row < this.height - 1 && !this._caves[row + 1][col].isVisible && this.allWindCavesNear(row + 1, col)) {
 			nearCavesMapPositions.push(new MapPosition(row + 1, col));
 		}
-		if (col > 0 && !this._caves[row][col - 1].isVisible) {
+		if (col > 0 && !this._caves[row][col - 1].isVisible && this.allWindCavesNear(row, col - 1)) {
 			nearCavesMapPositions.push(new MapPosition(row, col - 1));
 		}
 		for (let i: number = 0; i < nearCavesMapPositions.length; ++i) {
@@ -231,18 +223,36 @@ export class Map {
 		}
 	}
 
+	private allWindCavesNear(row: number, col: number): boolean {
+		let result: boolean = true;
+		if (row > 0 && this._caves[row - 1][col].isVisible && !this.caves[row - 1][col].hasWind) {
+			result = false;
+		}
+		if (col < this.width - 1 && this._caves[row][col + 1].isVisible && !this.caves[row][col + 1].hasWind) {
+			result = false;
+		}
+		if (row < this.height - 1 && this._caves[row + 1][col].isVisible && !this.caves[row + 1][col].hasWind) {
+			result = false;
+		}
+		if (col > 0 && this._caves[row][col - 1].isVisible && !this.caves[row][col - 1].hasWind) {
+			result = false;
+		}
+
+		return result;
+	}
+
 	private computeMonsterProbabilitiesNearCave(row: number, col: number): void {
 		const nearCaves: ICave[] = [];
-		if (row > 0 && !this._caves[row - 1][col].isVisible) {
+		if (row > 0 && !this._caves[row - 1][col].isVisible && this.allBonesCavesNear(row - 1, col)) {
 			nearCaves.push(this._caves[row - 1][col]);
 		}
-		if (col < this.width - 1 && !this._caves[row][col + 1].isVisible) {
+		if (col < this.width - 1 && !this._caves[row][col + 1].isVisible && this.allBonesCavesNear(row, col + 1)) {
 			nearCaves.push(this._caves[row][col + 1]);
 		}
-		if (row < this.height - 1 && !this._caves[row + 1][col].isVisible) {
+		if (row < this.height - 1 && !this._caves[row + 1][col].isVisible && this.allBonesCavesNear(row + 1, col)) {
 			nearCaves.push(this._caves[row + 1][col]);
 		}
-		if (col > 0 && !this._caves[row][col - 1].isVisible) {
+		if (col > 0 && !this._caves[row][col - 1].isVisible && this.allBonesCavesNear(row, col - 1)) {
 			nearCaves.push(this._caves[row][col - 1]);
 		}
 		for (let i: number = 0; i < nearCaves.length; ++i) {
@@ -259,6 +269,24 @@ export class Map {
 				nearCaves[i].probability.monster = 0;
 			}
 		}
+	}
+
+	private allBonesCavesNear(row: number, col: number): boolean {
+		let result: boolean = true;
+		if (row > 0 && this._caves[row - 1][col].isVisible && !this.caves[row - 1][col].hasBones) {
+			result = false;
+		}
+		if (col < this.width - 1 && this._caves[row][col + 1].isVisible && !this.caves[row][col + 1].hasBones) {
+			result = false;
+		}
+		if (row < this.height - 1 && this._caves[row + 1][col].isVisible && !this.caves[row + 1][col].hasBones) {
+			result = false;
+		}
+		if (col > 0 && this._caves[row][col - 1].isVisible && !this.caves[row][col - 1].hasBones) {
+			result = false;
+		}
+
+		return result;
 	}
 
 	private insertReachableCaveMapPositionSort(caveMapPosition: IMapPosition): void {

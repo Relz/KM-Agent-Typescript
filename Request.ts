@@ -3,7 +3,7 @@ import * as https from "https";
 import { IAction } from "./IAction";
 import { IRequestOptions } from "./IRequestOptions";
 
-const gameId: number = 51;
+const gameId: number = 50;
 const userId: number = 293;
 
 const options: IRequestOptions = {
@@ -31,7 +31,7 @@ export class Request {
 	}
 
 	public static check(jsonResponse: any): boolean {
-		if (jsonResponse.text === null/* || Request.isEmpty(jsonResponse.text.length)*/) {
+		if (jsonResponse.text === null) {
 			if (jsonResponse.error === "GAME OVER, AGENT IS DEAD") {
 				console.log("Прости, создатель, Я умер...");
 
@@ -50,26 +50,4 @@ export class Request {
 
 		return true;
 	}
-
-	/*private static isEmpty(obj: any): boolean {
-		if (obj == null) {
-			return true;
-		}
-		if (obj.length > 0) {
-			return false;
-		}
-		if (obj.length === 0) {
-			return true;
-		}
-		if (typeof obj !== "object") {
-			return true;
-		}
-		for (const key in obj) {
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
-				return false;
-			}
-		}
-
-		return true;
-	}*/
 }
