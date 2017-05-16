@@ -12,6 +12,7 @@ const action: IAction = {
 	passive: Actions.passive.noAction
 };
 
+Request.ConsoleLogInfo();
 Request.send(action, (jsonResponseStr: string) => {
 	const jsonResponse: any = JSON.parse(jsonResponseStr);
 	if (!Request.check(jsonResponse)) {

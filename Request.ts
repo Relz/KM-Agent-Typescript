@@ -3,8 +3,8 @@ import * as https from "https";
 import { IAction } from "./IAction";
 import { IRequestOptions } from "./IRequestOptions";
 
-const gameId: number = 50;
-const userId: number = 293;
+const gameId: number = 0;
+const userId: number = 0;
 
 const options: IRequestOptions = {
 	headers: { "Content-Type": "application/json" },
@@ -49,5 +49,10 @@ export class Request {
 		}
 
 		return true;
+	}
+
+	public static ConsoleLogInfo(): void {
+		console.log(`User Id: ${userId}`);
+		console.log(`Game Id: ${gameId}`);
 	}
 }
