@@ -17,6 +17,7 @@ Request.send(action, (jsonResponseStr: string) => {
 	const jsonResponse: any = JSON.parse(jsonResponseStr);
 	if (!Request.check(jsonResponse)) {
 		console.log("Игра не существует.");
+
 		return;
 	}
 	const currentCave: ICave = Parser.parseCave(jsonResponse.text.currentcave);

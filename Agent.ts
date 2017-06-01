@@ -17,6 +17,7 @@ export class Agent {
 	private _wayActions: IAction[];
 	private _wayMapPositions: MapPosition[];
 	private _wayMapDirections: Direction[];
+	private _crash: boolean = false;
 
 	public constructor(map: Map) {
 		this._map = map;
@@ -79,6 +80,9 @@ export class Agent {
 	}
 
 	public makeTurn(): void {
+		if (this._crash) {
+			return;
+		}
 		if (this._wayActions.length !== 0) {
 			this.keepWay();
 
@@ -251,6 +255,8 @@ export class Agent {
 	private makeWay(): void {
 		if (this._map.reachableCavesMapPositions.length === 0) {
 			console.log("Создатель, Я обошёл всю карту!");
+			this._crash = true;
+
 			return;
 		}
 		const goalCaveMapPosition: IMapPosition = new MapPosition(this._map.reachableCavesMapPositions[0].row, this._map.reachableCavesMapPositions[0].col);

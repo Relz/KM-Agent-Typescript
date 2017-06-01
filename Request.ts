@@ -5,6 +5,7 @@ import { IRequestOptions } from "./IRequestOptions";
 
 const gameId: number = 0;
 const userId: number = 0;
+const hash: string = "";
 
 const options: IRequestOptions = {
 	headers: { "Content-Type": "application/json" },
@@ -16,7 +17,7 @@ const options: IRequestOptions = {
 
 export class Request {
 	public static send(action: IAction, callback: (result: string) => void): void {
-		options.path = `/local/its/index.php?module=game&action=agentaction&gameid=${gameId}&userid=${userId}&act=${action.passive}%20${action.active}`;
+		options.path = `/local/its/tests/agentaction/?hash=${hash}&act=${action.passive}%20${action.active}`;
 		const request: http.ClientRequest = https.request(options, (result: http.IncomingMessage) => {
 			let jsonResponseStr: string = "";
 			result.on("data", (data: Buffer) => {
